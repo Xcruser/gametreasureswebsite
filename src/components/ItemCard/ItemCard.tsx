@@ -8,7 +8,6 @@ import { cn } from '@/utils/cn';
 import { FaShoppingCart, FaBolt } from 'react-icons/fa';
 
 export interface ItemCardProps {
-  id: string;
   title: string;
   description: string;
   price: number;
@@ -62,7 +61,6 @@ const iconSizes = {
 };
 
 export function ItemCard({
-  id,
   title,
   description,
   price,

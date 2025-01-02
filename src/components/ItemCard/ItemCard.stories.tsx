@@ -54,7 +54,6 @@ type Story = StoryObj<typeof ItemCard>;
 // Basis-Variante
 export const Default: Story = {
   args: {
-    id: '1',
     title: 'Monopoly Go! - 1000 Würfel',
     description: 'Würfel-Paket für Monopoly Go! Enthält 1000 Würfel zum Spielen.',
     price: 9.99,
@@ -98,7 +97,6 @@ export const FullWidth: Story = {
 // Inhaltsvarianten
 export const LongTitle: Story = {
   args: {
-    id: '2',
     title: 'Monopoly Go! - Super Premium Mega Würfel Paket mit extra vielen Würfeln und Bonus-Content',
     description: 'Ein sehr großes Würfel-Paket mit vielen Extra-Features und Bonus-Inhalten.',
     price: 49.99,
@@ -109,7 +107,6 @@ export const LongTitle: Story = {
 
 export const HighPrice: Story = {
   args: {
-    id: '3',
     title: 'VIP Würfel-Paket',
     description: 'Das exklusivste Würfel-Paket mit besonderen Vorteilen.',
     price: 99.99,
@@ -120,7 +117,6 @@ export const HighPrice: Story = {
 
 export const WithLongDescription: Story = {
   args: {
-    id: '4',
     title: 'Standard Würfel-Paket',
     description: 'Dieses Paket enthält alles, was du brauchst, um dein Spielerlebnis zu verbessern. Mit vielen Extra-Features und Bonus-Inhalten, die dir dabei helfen, schneller voranzukommen.',
     price: 19.99,
