@@ -3,14 +3,13 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { headerConfig } from '@/config/components';
-
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Game Treasures',
-  description: 'Discover and collect your favorite games',
+  description: 'Entdecken Sie exklusive Gaming-Items',
 };
 
 export default function RootLayout({
@@ -19,40 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.className} min-h-full flex flex-col`}>
+    <html lang="de">
+      <body className={inter.className}>
         <Header {...headerConfig} />
-        <main className="flex-1 container mx-auto px-4 py-8">
-          {children}
-        </main>
-        <footer className="bg-primary-800 border-t border-primary-600 py-6">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center">
-              <div className="text-content-secondary">
-                {new Date().getFullYear()} Game Treasures
-              </div>
-              <nav>
-                <ul className="flex space-x-6">
-                  <li>
-                    <a href="/privacy" className="text-content-secondary hover:text-accent-blue-light transition-colors">
-                      Privacy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/terms" className="text-content-secondary hover:text-accent-blue-light transition-colors">
-                      Terms
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/contact" className="text-content-secondary hover:text-accent-blue-light transition-colors">
-                      Contact
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </footer>
+        {children}
+        <Analytics />
       </body>
     </html>
   );
