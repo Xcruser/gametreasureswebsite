@@ -27,3 +27,20 @@
 - Verbesserte Komponenten-Konfiguration in `components.ts`
 - Erweiterte Storybook Stories für alle Komponenten-Varianten
 - Responsive Tailwind-Klassen für bessere Mobile-First Entwicklung
+
+## [Unreleased]
+
+### Added
+- Neue ItemCard-Komponente für die Shop-Seite
+  - Responsive Design mit 4 Größenvarianten
+  - Moderne UI mit Glasmorphism-Effekten
+  - Animierte Interaktionen und Icons
+  - Skalierbare Texte und optimierte Bilddarstellung
+  - Deutsches Preisformat
+- Neue Utility-Funktionen:
+  - `formatPrice`: Formatierung von Preisen im deutschen Format
+  - `cn`: Utility für bedingte Klassen-Zusammenführung
+
+### Changed
+- Button-Komponente um neue Styling-Optionen erweitert
+- Verbesserte Dokumentation mit detaillierten Komponenten-Beschreibungen
