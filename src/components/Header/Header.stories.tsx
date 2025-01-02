@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Header } from './Header';
 import { headerConfig } from '@/config/components';
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 const meta: Meta<typeof Header> = {
   title: 'Components/Header',
@@ -8,13 +9,27 @@ const meta: Meta<typeof Header> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    backgrounds: {
+      default: 'dark',
+      values: [
+        { name: 'dark', value: '#0a0a0a' },
+        { name: 'light', value: '#ffffff' }
+      ]
+    },
     nextjs: {
       appDirectory: true,
       navigation: {
         pathname: '/',
       },
-    },
+    }
   },
+  decorators: [
+    (Story) => (
+      <div className="dark bg-primary-950" style={{ minHeight: '80px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     backgroundColor: {
       control: 'select',
@@ -89,13 +104,6 @@ const meta: Meta<typeof Header> = {
       description: 'Text color of the cart badge'
     }
   },
-  decorators: [
-    (Story) => (
-      <div className="bg-primary-900 min-h-screen">
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;
@@ -111,6 +119,16 @@ export const WithCartItems: Story = {
     cartItemCount: 3,
     badgeBackgroundColor: "bg-accent-green-light",
     badgeTextColor: 'text-primary-900',
+    navigationItems: [{
+      "label": "Home",
+      "href": "/"
+    }, {
+      "label": "Shop",
+      "href": "/shop"
+    }, {
+      "label": "About",
+      "href": "/about"
+    }]
   },
 };
 
