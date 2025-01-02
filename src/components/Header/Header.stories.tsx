@@ -2,6 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Header } from './Header';
 import { headerConfig } from '@/config/components';
 
+// Konvertiere die readonly Props in mutable Props
+const mutableHeaderConfig = {
+  ...headerConfig,
+  navigationItems: [...headerConfig.navigationItems],
+};
+
 const meta: Meta<typeof Header> = {
   title: 'Components/Header',
   component: Header,
@@ -44,70 +50,38 @@ const meta: Meta<typeof Header> = {
       </div>
     ),
   ],
-  // Automatisch generierte Controls basierend auf der Konfiguration
   argTypes: {
     logoText: {
       control: 'text',
       description: 'Text des Logos',
-      defaultValue: headerConfig.logoText,
     },
     navigationItems: {
       control: 'object',
-      description: 'Navigation Items mit Label und URL',
-      defaultValue: headerConfig.navigationItems,
-    },
-    cartItemCount: {
-      control: { type: 'number', min: 0, max: 99 },
-      description: 'Anzahl der Items im Warenkorb',
-      defaultValue: headerConfig.cartItemCount,
+      description: 'Array von Navigationselementen',
     },
     backgroundColor: {
-      control: 'select',
-      options: [
-        'bg-primary-900',
-        'bg-primary-800',
-        'bg-primary-700',
-      ],
-      description: 'Hintergrundfarbe',
-      defaultValue: headerConfig.backgroundColor,
+      control: 'text',
+      description: 'Hintergrundfarbe des Headers',
     },
     textColor: {
-      control: 'select',
-      options: [
-        'text-content-primary',
-        'text-content-secondary',
-      ],
+      control: 'text',
       description: 'Textfarbe',
-      defaultValue: headerConfig.textColor,
     },
     hoverColor: {
-      control: 'select',
-      options: [
-        'hover:text-accent-blue-light',
-        'hover:text-accent-green-light',
-        'hover:text-accent-purple-light',
-      ],
-      description: 'Hover-Farbe',
-      defaultValue: headerConfig.hoverColor,
+      control: 'text',
+      description: 'Hover-Farbe für Links',
     },
     badgeBackgroundColor: {
-      control: 'select',
-      options: [
-        'bg-accent-blue-light',
-        'bg-accent-green-light',
-        'bg-accent-purple-light',
-      ],
-      description: 'Badge Hintergrundfarbe',
-      defaultValue: headerConfig.badgeBackgroundColor,
+      control: 'text',
+      description: 'Hintergrundfarbe des Warenkorb-Badges',
     },
     badgeTextColor: {
-      control: 'select',
-      options: [
-        'text-primary-900',
-        'text-content-primary',
-      ],
-      description: 'Badge Textfarbe',
-      defaultValue: headerConfig.badgeTextColor,
+      control: 'text',
+      description: 'Textfarbe des Warenkorb-Badges',
+    },
+    cartItemCount: {
+      control: 'number',
+      description: 'Anzahl der Items im Warenkorb',
     },
   },
 };
@@ -118,40 +92,34 @@ type Story = StoryObj<typeof Header>;
 // Basis-Story verwendet die Konfiguration als Ausgangspunkt
 export const Default: Story = {
   args: {
-    ...headerConfig,
+    ...mutableHeaderConfig,
   },
 };
 
-// Varianten zeigen verschiedene Konfigurationen
-export const WithShoppingCart: Story = {
+// Story mit vielen Items im Warenkorb
+export const WithManyCartItems: Story = {
   args: {
-    ...headerConfig,
-    cartItemCount: 3,
-    badgeBackgroundColor: "bg-accent-green-light",
+    ...mutableHeaderConfig,
+    cartItemCount: 99,
+  },
+};
+
+// Story mit leerem Warenkorb
+export const WithEmptyCart: Story = {
+  args: {
+    ...mutableHeaderConfig,
+    cartItemCount: 0,
+  },
+};
+
+// Story mit angepassten Farben
+export const CustomColors: Story = {
+  args: {
+    ...mutableHeaderConfig,
+    backgroundColor: 'bg-accent-purple-light',
+    textColor: 'text-primary-900',
+    hoverColor: 'hover:text-accent-blue',
+    badgeBackgroundColor: 'bg-accent-blue',
     badgeTextColor: 'text-primary-900',
-  },
-};
-
-export const BlueAccent: Story = {
-  args: {
-    ...headerConfig,
-    hoverColor: 'hover:text-accent-blue-light',
-    badgeBackgroundColor: 'bg-accent-blue-light',
-  },
-};
-
-export const GreenAccent: Story = {
-  args: {
-    ...headerConfig,
-    hoverColor: 'hover:text-accent-green-light',
-    badgeBackgroundColor: 'bg-accent-green-light',
-  },
-};
-
-export const PurpleAccent: Story = {
-  args: {
-    ...headerConfig,
-    hoverColor: 'hover:text-accent-purple-light',
-    badgeBackgroundColor: 'bg-accent-purple-light',
   },
 };

@@ -22,7 +22,7 @@ const meta: Meta<typeof FeatureList> = {
       defaultValue: featureListConfig.title,
     },
     features: {
-      control: 'array',
+      control: { type: 'object' },
       description: 'Liste der Features',
       defaultValue: featureListConfig.features,
     },

@@ -1,22 +1,17 @@
-import { HeaderProps } from '@/components/Header/Header';
-
 // Header Konfiguration
-export const headerConfig: HeaderProps = {
-  backgroundColor: 'bg-primary-800',
-  textColor: 'text-content-primary',
-  hoverColor: 'hover:text-accent-blue-light',
-  logoPosition: 'left',
-  navPosition: 'center',
-  padding: 'py-4',
+export const headerConfig = {
   logoText: 'Game Treasures',
   navigationItems: [
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/shop' },
     { label: 'About', href: '/about' },
   ],
-  cartItemCount: 0,
+  backgroundColor: 'bg-primary-800',
+  textColor: 'text-content-primary',
+  hoverColor: 'hover:text-accent-blue-light',
   badgeBackgroundColor: 'bg-accent-blue-light',
   badgeTextColor: 'text-primary-900',
+  cartItemCount: 0,
 } as const;
 
 // Button-Konfiguration
