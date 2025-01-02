@@ -36,7 +36,7 @@ export const featureListConfig = {
     'Kein Account notwendig',
     'Keine Spieldaten benötigt',
     'Schneller und sicherer Einkauf',
-  ],
+  ] as string[],
   checkmarkColor: 'bg-accent-green-light',
   withAnimation: true,
   alignment: 'center' as const,
