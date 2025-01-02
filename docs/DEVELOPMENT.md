@@ -175,6 +175,102 @@ interface HeaderProps {
 - [Next.js Dokumentation](https://nextjs.org/docs)
 - [Storybook Guides](https://storybook.js.org/docs/react/get-started/introduction)
 
+## Animations and Interactions
+
+### Homepage Animations
+
+The homepage uses Framer Motion for smooth and professional animations:
+
+```typescript
+// Animation variants for staggered children
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    }
+  }
+};
+
+// Individual item animations
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
+```
+
+#### Animation Components
+
+1. **Welcome Section**
+   - Fade-in animation with staggered children
+   - Subtle title scaling animation
+   - Floating checkmark icons
+
+2. **Info Box**
+   - Hover scale effect
+   - Animated gradient blob background
+   - Staggered list items
+
+3. **Buttons**
+   - Scale on hover
+   - Scale down on click
+   - Smooth color transitions
+
+### Layout Guidelines
+
+The homepage follows these layout principles:
+
+1. **Vertical Centering**
+   ```css
+   .main {
+     min-height: calc(100vh - 4rem);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+   ```
+
+2. **Content Width**
+   - Maximum width: 4xl (56rem)
+   - Centered with auto margins
+   - Responsive padding
+
+3. **Spacing**
+   - Consistent spacing using space-y-8
+   - Larger padding for interactive elements
+   - Generous whitespace around text
+
+### Interactive Elements
+
+1. **Buttons**
+   - Primary: Blue accent with hover darkening
+   - Secondary: Purple outline with fill on hover
+   - Both with scale animations
+
+2. **Info Box**
+   - Subtle hover effect
+   - Semi-transparent background
+   - Animated decorative elements
+
+### Best Practices
+
+1. **Performance**
+   - Use `layoutId` for shared element transitions
+   - Optimize animations with `willChange`
+   - Use `transition.duration` for consistent timing
+
+2. **Accessibility**
+   - Maintain readable text contrast
+   - Ensure interactive elements are keyboard accessible
+   - Provide proper ARIA labels
+
+3. **Responsive Design**
+   - Fluid typography
+   - Flexible spacing
+   - Mobile-first approach
+
 ---
 
 <div align="center">
