@@ -66,13 +66,6 @@ const mobileAlignmentClasses: Record<FeatureAlignment, string> = {
   right: 'items-start text-left md:items-end md:text-right',
 };
 
-// Desktop icon positions
-const iconPositionClasses: Record<IconPosition, string> = {
-  start: 'md:space-x-3',
-  spaced: 'md:space-x-6',
-  text: 'md:space-x-1.5',
-};
-
 // Mobile icon positions (always consistent spacing)
 const mobileIconPositionClasses: Record<IconPosition, string> = {
   start: 'space-x-3 md:space-x-3',
