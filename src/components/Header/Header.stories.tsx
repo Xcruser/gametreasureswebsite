@@ -20,7 +20,22 @@ const meta: Meta<typeof Header> = {
       navigation: {
         pathname: '/',
       },
-    }
+    },
+    toolbar: {
+      copyConfig: {
+        title: 'Kopiere Konfiguration',
+        icon: 'copy',
+        onClick: () => {
+          const config = `export const headerConfig = ${JSON.stringify(headerConfig, null, 2)} as const;`;
+          navigator.clipboard.writeText(config);
+          // Optional: Zeige eine Benachrichtigung
+          const event = new CustomEvent('storybookConfigCopied', {
+            detail: { message: 'Konfiguration wurde in die Zwischenablage kopiert!' }
+          });
+          window.dispatchEvent(event);
+        },
+      },
+    },
   },
   decorators: [
     (Story) => (
@@ -29,25 +44,41 @@ const meta: Meta<typeof Header> = {
       </div>
     ),
   ],
+  // Automatisch generierte Controls basierend auf der Konfiguration
   argTypes: {
+    logoText: {
+      control: 'text',
+      description: 'Text des Logos',
+      defaultValue: headerConfig.logoText,
+    },
+    navigationItems: {
+      control: 'object',
+      description: 'Navigation Items mit Label und URL',
+      defaultValue: headerConfig.navigationItems,
+    },
+    cartItemCount: {
+      control: { type: 'number', min: 0, max: 99 },
+      description: 'Anzahl der Items im Warenkorb',
+      defaultValue: headerConfig.cartItemCount,
+    },
     backgroundColor: {
       control: 'select',
       options: [
         'bg-primary-900',
         'bg-primary-800',
         'bg-primary-700',
-        'bg-primary-600',
       ],
-      description: 'Background color of the header'
+      description: 'Hintergrundfarbe',
+      defaultValue: headerConfig.backgroundColor,
     },
     textColor: {
       control: 'select',
       options: [
         'text-content-primary',
         'text-content-secondary',
-        'text-content-muted',
       ],
-      description: 'Text color for the header'
+      description: 'Textfarbe',
+      defaultValue: headerConfig.textColor,
     },
     hoverColor: {
       control: 'select',
@@ -56,30 +87,8 @@ const meta: Meta<typeof Header> = {
         'hover:text-accent-green-light',
         'hover:text-accent-purple-light',
       ],
-      description: 'Hover color for navigation items'
-    },
-    logoPosition: {
-      control: 'radio',
-      options: ['left', 'center'],
-      description: 'Position of the logo'
-    },
-    navPosition: {
-      control: 'radio',
-      options: ['left', 'center', 'right'],
-      description: 'Position of the navigation menu'
-    },
-    padding: {
-      control: 'select',
-      options: ['py-2', 'py-4', 'py-6', 'py-8'],
-      description: 'Vertical padding of the header'
-    },
-    logoText: {
-      control: 'text',
-      description: 'Text to display as logo'
-    },
-    cartItemCount: {
-      control: 'number',
-      description: 'Number of items in the shopping cart'
+      description: 'Hover-Farbe',
+      defaultValue: headerConfig.hoverColor,
     },
     badgeBackgroundColor: {
       control: 'select',
@@ -87,88 +96,62 @@ const meta: Meta<typeof Header> = {
         'bg-accent-blue-light',
         'bg-accent-green-light',
         'bg-accent-purple-light',
-        'bg-accent-blue-DEFAULT',
-        'bg-accent-green-DEFAULT',
-        'bg-accent-purple-DEFAULT',
       ],
-      description: 'Background color of the cart badge'
+      description: 'Badge Hintergrundfarbe',
+      defaultValue: headerConfig.badgeBackgroundColor,
     },
     badgeTextColor: {
       control: 'select',
       options: [
         'text-primary-900',
         'text-content-primary',
-        'text-content-secondary',
       ],
-      description: 'Text color of the cart badge'
-    }
+      description: 'Badge Textfarbe',
+      defaultValue: headerConfig.badgeTextColor,
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Header>;
 
+// Basis-Story verwendet die Konfiguration als Ausgangspunkt
 export const Default: Story = {
-  args: headerConfig,
+  args: {
+    ...headerConfig,
+  },
 };
 
-export const WithCartItems: Story = {
+// Varianten zeigen verschiedene Konfigurationen
+export const WithShoppingCart: Story = {
   args: {
     ...headerConfig,
     cartItemCount: 3,
     badgeBackgroundColor: "bg-accent-green-light",
     badgeTextColor: 'text-primary-900',
-    navigationItems: [{
-      "label": "Home",
-      "href": "/"
-    }, {
-      "label": "Shop",
-      "href": "/shop"
-    }, {
-      "label": "About",
-      "href": "/about"
-    }]
   },
 };
 
-export const AccentBlue: Story = {
+export const BlueAccent: Story = {
   args: {
     ...headerConfig,
-    backgroundColor: 'bg-primary-900',
     hoverColor: 'hover:text-accent-blue-light',
+    badgeBackgroundColor: 'bg-accent-blue-light',
   },
 };
 
-export const AccentGreen: Story = {
+export const GreenAccent: Story = {
   args: {
     ...headerConfig,
-    backgroundColor: 'bg-primary-900',
     hoverColor: 'hover:text-accent-green-light',
-  },
-};
-
-export const AccentPurple: Story = {
-  args: {
-    ...headerConfig,
-    backgroundColor: 'bg-primary-900',
-    hoverColor: 'hover:text-accent-purple-light',
-  },
-};
-
-export const WithGreenBadge: Story = {
-  args: {
-    ...headerConfig,
-    cartItemCount: 5,
     badgeBackgroundColor: 'bg-accent-green-light',
-    badgeTextColor: 'text-primary-900',
   },
 };
 
-export const WithPurpleBadge: Story = {
+export const PurpleAccent: Story = {
   args: {
     ...headerConfig,
-    cartItemCount: 7,
+    hoverColor: 'hover:text-accent-purple-light',
     badgeBackgroundColor: 'bg-accent-purple-light',
-    badgeTextColor: 'text-primary-900',
   },
 };

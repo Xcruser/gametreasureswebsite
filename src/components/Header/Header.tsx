@@ -1,138 +1,134 @@
-import React from 'react';
+'use client';
 import Link from 'next/link';
-import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaBars, FaTimes, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
+
+export interface NavigationItem {
+  label: string;
+  href: string;
+}
 
 export interface HeaderProps {
-  /**
-   * Optional custom class name
-   */
-  className?: string;
-  /**
-   * Navigation items for the header
-   */
-  navigationItems?: Array<{
-    label: string;
-    href: string;
-  }>;
-  /**
-   * Background color of the header
-   */
-  backgroundColor?: string;
-  /**
-   * Text color for the header
-   */
-  textColor?: string;
-  /**
-   * Hover color for navigation items
-   */
-  hoverColor?: string;
-  /**
-   * Logo position - 'left' or 'center'
-   */
-  logoPosition?: 'left' | 'center';
-  /**
-   * Navigation position - 'left', 'center', or 'right'
-   */
-  navPosition?: 'left' | 'center' | 'right';
-  /**
-   * Custom padding for the header
-   */
-  padding?: string;
-  /**
-   * Logo text or brand name
-   */
   logoText?: string;
-  /**
-   * Number of items in cart
-   */
+  navigationItems?: NavigationItem[];
   cartItemCount?: number;
-  /**
-   * Background color for the cart badge
-   */
+  className?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  hoverColor?: string;
   badgeBackgroundColor?: string;
-  /**
-   * Text color for the cart badge
-   */
   badgeTextColor?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  className = '',
+export function Header({
+  logoText = 'Game Treasures',
   navigationItems = [
     { label: 'Home', href: '/' },
-    { label: 'Games', href: '/games' },
+    { label: 'Shop', href: '/shop' },
     { label: 'About', href: '/about' },
   ],
+  cartItemCount = 0,
+  className = '',
   backgroundColor = 'bg-primary-800',
   textColor = 'text-content-primary',
   hoverColor = 'hover:text-accent-blue-light',
-  logoPosition = 'left',
-  navPosition = 'right',
-  padding = 'py-4',
-  logoText = 'Game Treasures',
-  cartItemCount = 0,
   badgeBackgroundColor = 'bg-accent-blue-light',
   badgeTextColor = 'text-primary-900',
-}) => {
-  const containerStyles = `w-full ${backgroundColor} ${textColor} ${padding} ${className} border-b border-primary-600`;
-  
-  const getNavStyles = () => {
-    if (navPosition === 'center') {
-      return 'absolute left-1/2 transform -translate-x-1/2';
-    }
-    return {
-      left: 'ml-8',
-      right: 'ml-auto',
-    }[navPosition];
-  };
-
-  const logoStyles = {
-    left: 'text-left',
-    center: 'text-center w-full',
-  };
+}: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className={containerStyles}>
+    <header className={`${backgroundColor} ${textColor} ${className}`}>
       <div className="container mx-auto px-4">
-        <nav className="flex items-center relative">
-          <div className={`text-xl font-bold ${logoStyles[logoPosition]} text-accent-blue-DEFAULT hover:text-accent-blue-light transition-colors`}>
-            <Link href="/">
-              {logoText}
-            </Link>
-          </div>
-          <ul className={`flex space-x-6 ${getNavStyles()}`}>
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link 
+            href="/"
+            className="text-lg md:text-xl font-bold tracking-tight hover:text-accent-blue-light transition-colors"
+          >
+            {logoText}
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`transition-colors ${textColor} ${hoverColor}`}
-                >
-                  {item.label}
-                </Link>
-              </li>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`text-sm font-medium transition-colors ${hoverColor}`}
+              >
+                {item.label}
+              </Link>
             ))}
-          </ul>
-          <div className="flex items-center space-x-4 ml-auto">
-            <Link 
-              href="/cart" 
-              className={`relative transition-colors ${textColor} ${hoverColor}`}
+          </nav>
+
+          {/* Cart, User and Mobile Menu Button */}
+          <div className="flex items-center space-x-4">
+            {/* Cart Icon */}
+            <Link
+              href="/cart"
+              className="relative p-2 rounded-full hover:bg-primary-700 transition-colors"
             >
-              <FaShoppingCart className="text-xl" />
+              <FaShoppingCart className="w-5 h-5" />
               {cartItemCount > 0 && (
-                <span className={`absolute -top-2 -right-2 ${badgeBackgroundColor} ${badgeTextColor} font-bold text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center px-1`}>
+                <span
+                  className={`absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-medium rounded-full ${badgeBackgroundColor} ${badgeTextColor}`}
+                >
                   {cartItemCount}
                 </span>
               )}
             </Link>
+
+            {/* User Icon */}
             <Link 
               href="/login" 
               className={`transition-colors ${textColor} ${hoverColor}`}
             >
-              <FaUserCircle className="text-xl" />
+              <FaUserCircle className="w-5 h-5" />
             </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 rounded-full hover:bg-primary-700 transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <FaTimes className="w-5 h-5" />
+              ) : (
+                <FaBars className="w-5 h-5" />
+              )}
+            </button>
           </div>
-        </nav>
+        </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.nav
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="py-4 space-y-2 border-t border-primary-700">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`block py-2 px-4 text-base font-medium rounded-lg hover:bg-primary-700 transition-colors ${hoverColor}`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </motion.nav>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
-};
+}
