@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Header } from './Header';
 import { headerConfig } from '@/config/components';
-import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 const meta: Meta<typeof Header> = {
   title: 'Components/Header',
