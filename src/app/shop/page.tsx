@@ -1,35 +1,61 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useShopItems } from '@/hooks/useShopItems';
+import { ItemCard } from '@/components/ItemCard/ItemCard';
+import { useCart } from '@/lib/CartContext';
 
 export default function ShopPage() {
-  return (
-    <main className="container mx-auto px-4 py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl font-bold mb-8 text-content-primary">
-          Game Treasures Shop
-        </h1>
-        
-        {/* Filter und Suche */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="w-full md:w-64">
-            {/* Filter-Komponente wird hier eingefügt */}
-          </div>
-          
-          <div className="flex-1">
-            {/* Suchleiste wird hier eingefügt */}
-          </div>
-        </div>
+  const { data, isLoading, error } = useShopItems();
+  const { addItem } = useCart();
 
-        {/* Produktgrid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {/* Produktkarten werden hier eingefügt */}
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      </motion.div>
-    </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center text-red-500">
+          Error loading items: {error.message}
+        </div>
+      </div>
+    );
+  }
+
+  if (!data?.items?.length) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          No items available.
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Shop</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {data.items.map((item) => (
+          <div key={item.id}>
+            <ItemCard
+              item={{
+                ...item,
+                price: typeof item.price === 'object' && 'toNumber' in item.price 
+                  ? item.price.toNumber() 
+                  : Number(item.price)
+              }}
+              onAddToCart={addItem}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

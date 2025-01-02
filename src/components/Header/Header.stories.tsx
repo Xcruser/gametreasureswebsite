@@ -93,6 +93,17 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {
   args: {
     ...mutableHeaderConfig,
+
+    navigationItems: [{
+      "label": "Home",
+      "href": "/"
+    }, {
+      "label": "Shop",
+      "href": "/shop"
+    }, {
+      "label": "Contact",
+      "href": "/contact"
+    }]
   },
 };
 

@@ -1,184 +1,145 @@
 'use client';
 
+import { type Item as DbItem } from '@prisma/client';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Button } from '../Button/Button';
-import { formatPrice } from '@/utils/formatPrice';
-import { cn } from '@/utils/cn';
-import { FaShoppingCart, FaBolt } from 'react-icons/fa';
+import { getItemImage, DEFAULT_IMAGE } from '@/lib/constants';
+import { useState } from 'react';
+import { FaShoppingCart } from 'react-icons/fa';
+
+// Omit price from DbItem and add it back as number
+export type CartItem = Omit<DbItem, 'price'> & {
+  price: number;
+  quantity?: number;
+};
 
 export interface ItemCardProps {
-  title: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  width?: 'sm' | 'md' | 'lg' | 'full';
-  className?: string;
-  onAddToCart?: () => void;
-  onBuyNow?: () => void;
+  item?: CartItem;
+  onAddToCart?: (item: CartItem) => void;
+  onQuantityChange?: (quantity: number) => void;
+  initialQuantity?: number;
+  isExpanded?: boolean;
+  onExpandChange?: (expanded: boolean) => void;
 }
 
-const widthClasses = {
-  sm: 'w-64',
-  md: 'w-80',
-  lg: 'w-96',
-  full: 'w-full',
-};
-
-const titleClasses = {
-  sm: 'text-lg',
-  md: 'text-xl',
-  lg: 'text-2xl',
-  full: 'text-2xl md:text-3xl',
-};
-
-const descriptionClasses = {
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-base',
-  full: 'text-base md:text-lg',
-};
-
-const priceClasses = {
-  sm: 'text-base px-3 py-1.5',
-  md: 'text-lg px-4 py-2',
-  lg: 'text-xl px-5 py-2.5',
-  full: 'text-xl md:text-2xl px-5 py-2.5',
-};
-
-const buttonClasses = {
-  sm: 'text-sm py-1.5',
-  md: 'text-base py-2',
-  lg: 'text-lg py-2.5',
-  full: 'text-lg md:text-xl py-3',
-};
-
-const iconSizes = {
-  sm: 14,
-  md: 16,
-  lg: 18,
-  full: 20,
+const defaultItem: CartItem = {
+  id: '',
+  title: '',
+  description: '',
+  price: 0,
+  imageUrl: '',
+  category: 'currency',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  inStock: true,
 };
 
 export function ItemCard({
-  title,
-  description,
-  price,
-  imageUrl,
-  width = 'md',
-  className,
+  item = defaultItem,
   onAddToCart,
-  onBuyNow,
+  onQuantityChange,
+  initialQuantity = 1,
+  isExpanded: controlledIsExpanded,
+  onExpandChange,
 }: ItemCardProps) {
-  const iconSize = iconSizes[width];
+  const { title, description, price = 0, category, imageUrl, inStock } = item;
+  const [imgSrc, setImgSrc] = useState(getItemImage(imageUrl));
+  const [internalIsExpanded, setInternalIsExpanded] = useState(false);
+  const [quantity, setQuantity] = useState(initialQuantity);
+
+  // Controlled vs Uncontrolled Expansion
+  const isExpanded = controlledIsExpanded !== undefined ? controlledIsExpanded : internalIsExpanded;
+  const setIsExpanded = (expanded: boolean) => {
+    if (onExpandChange) {
+      onExpandChange(expanded);
+    } else {
+      setInternalIsExpanded(expanded);
+    }
+  };
+
+  const handleQuantityChange = (delta: number) => {
+    const newQuantity = Math.max(1, quantity + delta);
+    setQuantity(newQuantity);
+    onQuantityChange?.(newQuantity);
+  };
+
+  const handleAddToCart = () => {
+    if (!inStock) return;
+    
+    onAddToCart?.({
+      ...item,
+      quantity
+    });
+    setIsExpanded(false);
+    setQuantity(1);
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
-      className={cn(
-        'bg-gradient-to-br from-primary-800 to-primary-900',
-        'rounded-2xl overflow-hidden',
-        'shadow-lg hover:shadow-xl transition-all duration-300',
-        'border border-primary-700/50',
-        'backdrop-blur-sm',
-        widthClasses[width],
-        className
-      )}
-    >
-      {/* Bild-Container mit Overlay */}
-      <div className="relative w-full aspect-[4/3] group">
+    <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div className="relative h-48">
         <Image
-          src={imageUrl}
+          src={imgSrc}
           alt={title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
-          sizes={width === 'full' ? '100vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          onError={() => setImgSrc(DEFAULT_IMAGE)}
+          priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent" />
-        
-        {/* Preis-Badge */}
-        <div className="absolute top-4 right-4">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className={cn(
-              'bg-accent-blue-light text-primary-900 rounded-full font-bold shadow-lg',
-              'transition-all duration-300',
-              priceClasses[width]
-            )}
-          >
-            {formatPrice(price)}
-          </motion.div>
+        <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gradient-to-t from-gray-900 to-transparent">
+          <span className="inline-block bg-gray-900 bg-opacity-70 px-2 py-1 rounded text-blue-400 text-sm font-medium mb-1">
+            {category.toLowerCase()}
+          </span>
+          <h3 className="text-white font-semibold text-lg truncate">{title}</h3>
         </div>
       </div>
 
-      {/* Content */}
-      <div className={cn(
-        'p-4',
-        width === 'lg' && 'p-5',
-        width === 'full' && 'p-6 md:p-8'
-      )}>
-        {/* Titel */}
-        <h3 className={cn(
-          'font-bold text-content-primary mb-2 line-clamp-2',
-          'transition-all duration-300',
-          titleClasses[width]
-        )}>
-          {title}
-        </h3>
-
-        {/* Beschreibung */}
-        <p className={cn(
-          'text-content-secondary mb-6 line-clamp-2',
-          'transition-all duration-300',
-          descriptionClasses[width]
-        )}>
-          {description}
-        </p>
-
-        {/* Buttons mit Glasmorphism-Effekt */}
-        <div className="flex flex-col gap-3">
-          <Button
-            variant="primary"
-            size="lg"
-            color="blue"
-            onClick={onBuyNow}
-            className={cn(
-              'w-full bg-accent-blue-light/90 hover:bg-accent-blue-light transition-colors backdrop-blur-sm',
-              'flex items-center justify-center gap-2',
-              buttonClasses[width]
-            )}
-            animationType="scale"
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-blue-500 text-xl font-bold">€{price.toFixed(2)}</span>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-gray-400 hover:text-white transition-colors"
           >
-            <FaBolt size={iconSize} />
-            Sofort Kaufen
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            color="blue"
-            onClick={onAddToCart}
-            className={cn(
-              'w-full border border-accent-blue-light/20 hover:bg-accent-blue-light/10 transition-colors backdrop-blur-sm',
-              'flex items-center justify-center gap-2 group',
-              buttonClasses[width]
-            )}
-            animationType="scale"
-          >
-            <motion.div
-              initial={false}
-              animate={{ rotate: onAddToCart ? 360 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <FaShoppingCart size={iconSize} className="transform transition-transform group-hover:scale-110" />
-            </motion.div>
-            In den Warenkorb
-          </Button>
+            {isExpanded ? 'Weniger' : 'Mehr'}
+          </button>
         </div>
+
+        <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-h-96' : 'max-h-0'}`}>
+          <div className="bg-gray-700 rounded-lg p-4 mb-4">
+            <p className="text-gray-300 text-sm mb-4">{description}</p>
+            
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-gray-300">Menge:</span>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleQuantityChange(-1)}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-600 hover:bg-gray-500 text-white transition-colors"
+                  disabled={!inStock}
+                >
+                  -
+                </button>
+                <span className="text-white w-8 text-center">{quantity}</span>
+                <button
+                  onClick={() => handleQuantityChange(1)}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-gray-600 hover:bg-gray-500 text-white transition-colors"
+                  disabled={!inStock}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={handleAddToCart}
+          disabled={!inStock}
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaShoppingCart />
+          <span>{inStock ? 'In den Warenkorb' : 'Nicht verfügbar'}</span>
+        </button>
       </div>
-    </motion.div>
+    </div>
   );
 }

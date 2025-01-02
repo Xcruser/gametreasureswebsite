@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { Header } from '@/components/Header/Header';
 import { headerConfig } from '@/config/components';
+import { Providers } from './providers';
+import { CartProvider } from '@/lib/CartContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,9 +29,13 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={inter.className}>
-        <Header {...headerProps} />
-        {children}
-        <Analytics />
+        <Providers>
+          <CartProvider>
+            <Header {...headerProps} />
+            {children}
+          </CartProvider>
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );

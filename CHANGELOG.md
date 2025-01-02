@@ -44,3 +44,14 @@
 ### Changed
 - Button-Komponente um neue Styling-Optionen erweitert
 - Verbesserte Dokumentation mit detaillierten Komponenten-Beschreibungen
+
+### Fixed
+- Korrigierte Next.js Route Handler Typisierung in der Shop-API
+- Aktualisierte Category-Enum-Werte gemäß Prisma-Schema (von UPPERCASE zu lowercase)
+- Verbesserte Typisierung der Seed-Daten mit korrektem Category-Enum
+- Aktualisierte Next.js Konfiguration für bessere Kompatibilität
+- Behob Build-Fehler in ItemCard und Stories bezüglich Category-Typen
+
+### Changed
+- Änderte Navigation von "About" zu "Contact"
+- Optimierte API-Route-Handler für bessere Typsicherheit
