@@ -23,6 +23,12 @@ const preview: Preview = {
         },
       ],
     },
+    docs: {
+      toc: true, // Aktiviert das Inhaltsverzeichnis
+      source: {
+        state: 'open', // Zeigt den Quellcode standardmäßig
+      },
+    },
   },
 };
 

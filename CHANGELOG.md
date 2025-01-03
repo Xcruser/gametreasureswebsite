@@ -40,10 +40,27 @@
 - Neue Utility-Funktionen:
   - `formatPrice`: Formatierung von Preisen im deutschen Format
   - `cn`: Utility für bedingte Klassen-Zusammenführung
+- Neue Kontaktseite mit modernem Design
+  - Responsives Layout mit Grid-System
+  - Glaseffekt-Design mit Hover-Zuständen
+  - Kontaktformular mit Validierung
+  - Kontaktinformationen mit Icons
+  - E-Mail und Messenger Integration
+- Verbesserte Komponenten-Dokumentation in Storybook
+  - Automatische Dokumentation für alle Komponenten
+  - Beispiele und Props-Beschreibungen
+  - Interaktive Story-Controls
 
 ### Changed
 - Button-Komponente um neue Styling-Optionen erweitert
 - Verbesserte Dokumentation mit detaillierten Komponenten-Beschreibungen
+- Design-System Aktualisierungen
+  - Neue Glaseffekt-Komponenten
+  - Erweiterte Farbpalette mit Akzentfarben
+  - Verbesserte Hover- und Fokus-Zustände
+  - Einheitliche Input-Styles
+- Änderte Navigation von "About" zu "Contact"
+- Optimierte API-Route-Handler für bessere Typsicherheit
 
 ### Fixed
 - Korrigierte Next.js Route Handler Typisierung in der Shop-API
@@ -51,7 +68,6 @@
 - Verbesserte Typisierung der Seed-Daten mit korrektem Category-Enum
 - Aktualisierte Next.js Konfiguration für bessere Kompatibilität
 - Behob Build-Fehler in ItemCard und Stories bezüglich Category-Typen
-
-### Changed
-- Änderte Navigation von "About" zu "Contact"
-- Optimierte API-Route-Handler für bessere Typsicherheit
+- Behoben: Endlosschleife im ContactForm useEffect
+- Verbesserte Typsicherheit in Komponenten
+- Optimierte Storybook-Konfiguration
