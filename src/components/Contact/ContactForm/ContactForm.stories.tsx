@@ -5,41 +5,27 @@ const meta = {
   title: 'Components/Contact/ContactForm',
   component: ContactForm,
   parameters: {
-    layout: 'padded',
+    layout: 'centered',
     docs: {
       description: {
-        component: 'Eine Formular-Komponente für die Kontaktaufnahme. Ermöglicht Besuchern, eine Nachricht zu senden.'
-      }
-    }
+        component: 'Ein Kontaktformular für die Benutzer-Kommunikation.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
-    onSubmit: { 
+    onSubmit: {
       action: 'submitted',
-      description: 'Callback wenn das Formular abgeschickt wird'
+      description: 'Callback wenn das Formular abgeschickt wird',
     },
     initialValues: {
       control: 'object',
       description: 'Initiale Werte für das Formular',
     },
-    buttonText: {
-      control: 'text',
-      description: 'Text für den Submit-Button',
-    },
-    buttonColor: {
-      control: 'select',
-      options: ['blue', 'green', 'purple'],
-      description: 'Farbe des Submit-Buttons',
-    },
-    buttonSize: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Größe des Submit-Buttons',
-    },
     className: {
       control: 'text',
       description: 'Zusätzliche CSS-Klassen',
-    }
+    },
   },
 } satisfies Meta<typeof ContactForm>;
 
@@ -48,44 +34,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    buttonText: 'Nachricht senden',
-    buttonColor: 'blue',
-    buttonSize: 'lg',
-    initialValues: {
-      name: '',
-      email: '',
-      betreff: '',
-      bestellnummer: '',
-      nachricht: '',
-    }
+    className: '',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Die Standard-Variante des Kontaktformulars mit leeren Feldern.'
-      }
-    }
-  }
 };
 
-export const WithPrefilledValues: Story = {
+export const WithInitialValues: Story = {
   args: {
-    buttonText: 'Nachricht senden',
-    buttonColor: 'blue',
-    buttonSize: 'lg',
     initialValues: {
       name: 'Max Mustermann',
       email: 'max@example.com',
-      betreff: 'Anfrage zu einer Bestellung',
-      bestellnummer: 'GT-12345',
-      nachricht: 'Hallo, ich habe eine Frage zu meiner Bestellung...',
-    }
+      betreff: 'Produktanfrage',
+      bestellnummer: '12345',
+      nachricht: 'Ich hätte gerne mehr Informationen zu Ihren Produkten.',
+    },
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Beispiel eines vorausgefüllten Kontaktformulars.'
-      }
-    }
-  }
 };

@@ -5,45 +5,35 @@ const meta = {
   title: 'Components/Contact/ContactInfo',
   component: ContactInfo,
   parameters: {
-    layout: 'padded',
+    layout: 'centered',
     docs: {
       description: {
-        component: 'Zeigt Kontaktinformationen und Geschäftszeiten an. Enthält Buttons für E-Mail und Messenger-Kontakt.'
-      }
-    }
+        component: 'Zeigt Kontaktinformationen und Geschäftszeiten an.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
     email: {
       control: 'text',
-      description: 'E-Mail-Adresse für den Support',
+      description: 'E-Mail-Adresse für den Kontakt',
     },
     messengerUrl: {
       control: 'text',
-      description: 'URL für den Facebook Messenger',
+      description: 'URL zum Facebook Messenger',
     },
     supportText: {
       control: 'text',
-      description: 'Text für die Support-Antwortzeit',
+      description: 'Text zur Support-Antwortzeit',
     },
     businessHours: {
       control: 'object',
       description: 'Geschäftszeiten',
     },
-    buttonColor: {
-      control: 'select',
-      options: ['blue', 'green', 'purple'],
-      description: 'Farbe der Kontakt-Buttons',
-    },
-    buttonSize: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Größe der Kontakt-Buttons',
-    },
     className: {
       control: 'text',
       description: 'Zusätzliche CSS-Klassen',
-    }
+    },
   },
 } satisfies Meta<typeof ContactInfo>;
 
@@ -59,29 +49,5 @@ export const Default: Story = {
       days: 'Montag - Freitag',
       hours: '9:00 - 17:00 Uhr',
     },
-    buttonColor: 'blue',
-    buttonSize: 'sm',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Die Standard-Darstellung der Kontaktinformationen.'
-      }
-    }
-  }
-};
-
-export const CustomColors: Story = {
-  args: {
-    ...Default.args,
-    buttonColor: 'purple',
-    buttonSize: 'md',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Kontaktinformationen mit angepassten Button-Farben und -Größen.'
-      }
-    }
-  }
 };

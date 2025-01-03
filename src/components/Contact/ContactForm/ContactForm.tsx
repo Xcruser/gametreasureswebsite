@@ -70,7 +70,7 @@ export function ContactForm({
     if (hasChanged) {
       setFormData(initialValues);
     }
-  }, [initialValues.name, initialValues.email, initialValues.betreff, initialValues.bestellnummer, initialValues.nachricht]);
+  }, [formData, initialValues]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
