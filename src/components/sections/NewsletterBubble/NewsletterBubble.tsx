@@ -1,184 +1,126 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button/Button';
-import { cn } from '@/utils/cn';
+import { FiMail, FiX } from 'react-icons/fi';
 
-interface NewsletterBubbleProps {
-  className?: string;
-  position?: 'bottom-right' | 'bottom-left';
-  title?: string;
-  description?: string;
-  buttonText?: string;
-  placeholderText?: string;
-  successMessage?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  onSubscribe?: (email: string) => void;
-  showOnMobile?: boolean;
-  defaultOpen?: boolean;
-  defaultSubmitted?: boolean;
-}
+const NEWSLETTER_DISMISSED_KEY = 'newsletter-dismissed';
 
-export function NewsletterBubble({
-  className,
-  position = 'bottom-right',
-  title = 'Newsletter abonnieren',
-  description = 'Bleibe auf dem Laufenden über neue Spiele und Angebote!',
-  buttonText = 'Abonnieren',
-  placeholderText = 'Deine E-Mail-Adresse',
-  successMessage = 'Vielen Dank fürs Abonnieren!',
-  backgroundColor = 'white',
-  textColor = 'gray-900',
-  onSubscribe,
-  showOnMobile = false,
-  defaultOpen = false,
-  defaultSubmitted = false,
-}: NewsletterBubbleProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+export function NewsletterBubble() {
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(defaultSubmitted);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      setError('Bitte gib eine E-Mail-Adresse ein');
-      return;
-    }
-    if (!email.includes('@')) {
-      setError('Bitte gib eine gültige E-Mail-Adresse ein');
-      return;
-    }
-    
-    onSubscribe?.(email);
-    setIsSubmitted(true);
-    setError('');
+  useEffect(() => {
+    const isDismissed = localStorage.getItem(NEWSLETTER_DISMISSED_KEY);
+    setIsExpanded(!isDismissed);
+  }, []);
+
+  const handleDismiss = () => {
+    setIsExpanded(false);
+    localStorage.setItem(NEWSLETTER_DISMISSED_KEY, 'true');
   };
 
-  if (isSubmitted) {
-    return (
-      <div className={cn(
-        'fixed z-50 p-4 rounded-2xl shadow-xl',
-        'transform transition-all duration-300 ease-in-out',
-        position === 'bottom-right' ? 'bottom-6 right-6' : 'bottom-6 left-6',
-        !showOnMobile && 'hidden md:block',
-        `bg-${backgroundColor}`,
-        `text-${textColor}`,
-        className
-      )}>
-        <div className="text-center py-2">
-          <p className="font-medium">{successMessage}</p>
-        </div>
-      </div>
-    );
-  }
+  const handleExpand = () => {
+    setIsExpanded(true);
+    localStorage.removeItem(NEWSLETTER_DISMISSED_KEY);
+  };
 
-  const toggleBubble = () => {
-    setIsOpen(!isOpen);
-    if (!isOpen) {
-      setError('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fehler bei der Newsletter-Anmeldung');
+      }
+
+      setIsSubscribed(true);
+      localStorage.setItem(NEWSLETTER_DISMISSED_KEY, 'true');
+      setTimeout(() => {
+        setIsExpanded(false);
+      }, 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fehler bei der Newsletter-Anmeldung');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className={cn(
-      'fixed z-50',
-      position === 'bottom-right' ? 'bottom-6 right-6' : 'bottom-6 left-6',
-      !showOnMobile && 'hidden md:block',
-      className
-    )}>
-      {/* Geschlossener Zustand - Bubble */}
-      {!isOpen && (
-        <button
-          onClick={toggleBubble}
-          className={cn(
-            'w-12 h-12 rounded-full shadow-lg flex items-center justify-center',
-            'transform transition-all hover:scale-110',
-            `bg-${backgroundColor}`,
-            `text-${textColor}`
-          )}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            />
-          </svg>
-        </button>
-      )}
-
-      {/* Geöffneter Zustand - Newsletter Form */}
-      {isOpen && (
-        <div className={cn(
-          'p-4 rounded-2xl shadow-xl',
-          'transform transition-all duration-300 ease-in-out',
-          'w-72',
-          `bg-${backgroundColor}`,
-          `text-${textColor}`
-        )}>
-          <button
-            onClick={toggleBubble}
-            className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <h3 className="text-base font-semibold">{title}</h3>
-              <p className="text-sm text-gray-600">{description}</p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-2">
-              <div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={placeholderText}
-                  className={cn(
-                    'w-full px-3 py-2 text-sm rounded-lg',
-                    'border border-gray-300',
-                    'focus:outline-none focus:ring-2 focus:ring-blue-500',
-                    error ? 'border-red-500' : 'border-gray-300'
-                  )}
-                />
-                {error && (
-                  <p className="mt-1 text-xs text-red-500">{error}</p>
-                )}
-              </div>
-
-              <Button
-                type="submit"
-                variant="primary"
-                size="small"
-                className="w-full"
+    <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50 max-w-[calc(100vw-2rem)] sm:max-w-sm">
+      {isExpanded ? (
+        <div className="bg-primary-800/95 backdrop-blur-sm border border-primary-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-xl">
+          {!isSubscribed ? (
+            <>
+              <button
+                onClick={handleDismiss}
+                className="absolute top-2 right-2 text-content-secondary hover:text-content-primary"
               >
-                {buttonText}
-              </Button>
-            </form>
-          </div>
+                <FiX className="w-5 h-5" />
+              </button>
+              <h3 className="text-lg sm:text-xl font-bold text-content-primary mb-2">
+                Newsletter abonnieren
+              </h3>
+              <p className="text-sm sm:text-base text-content-secondary mb-4">
+                Erhalte exklusive Angebote und bleibe über neue Produkte informiert!
+              </p>
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                <div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Deine E-Mail-Adresse"
+                    required
+                    disabled={isLoading}
+                    className="w-full px-3 sm:px-4 py-2 bg-primary-900/50 border border-primary-700/50 rounded-lg 
+                              text-sm sm:text-base text-content-primary placeholder-content-secondary/50 
+                              focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  />
+                  {error && (
+                    <p className="mt-2 text-xs sm:text-sm text-red-500">{error}</p>
+                  )}
+                </div>
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="w-full text-sm sm:text-base py-2 sm:py-2.5"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Wird angemeldet...' : 'Abonnieren'}
+                </Button>
+              </form>
+            </>
+          ) : (
+            <div className="text-center py-2">
+              <p className="text-sm sm:text-base text-content-primary font-semibold">
+                Vielen Dank für deine Anmeldung! 🎮
+              </p>
+            </div>
+          )}
         </div>
+      ) : (
+        <button
+          onClick={handleExpand}
+          className="bg-primary-800/95 backdrop-blur-sm border border-primary-700/50 rounded-full p-4 shadow-xl
+                    hover:bg-primary-700/95 transition-colors duration-200 text-content-primary"
+        >
+          <FiMail className="w-6 h-6" />
+        </button>
       )}
     </div>
   );

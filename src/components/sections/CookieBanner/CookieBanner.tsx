@@ -1,99 +1,105 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button/Button';
-import { cn } from '@/utils/cn';
+import { cookieService } from '@/lib/services/cookieService';
+import Link from 'next/link';
 
 interface CookieBannerProps {
   className?: string;
-  onAcceptAll?: () => void;
-  onAcceptNecessary?: () => void;
-  // Anpassbare Texte
-  title?: string;
-  description?: string;
-  acceptAllText?: string;
-  acceptNecessaryText?: string;
   // Layout-Optionen
   position?: 'top' | 'bottom';
   maxWidth?: string;
   showContainer?: boolean;
-  // Styling-Optionen
-  backgroundColor?: string;
-  textColor?: string;
-  borderColor?: string;
-  // Custom Content
-  children?: React.ReactNode;
   // Button-Optionen
   buttonSize?: 'small' | 'medium' | 'large';
   buttonClassName?: string;
   reverseButtonOrder?: boolean;
   buttonsFullWidth?: boolean;
+  // Callback wenn Banner geschlossen wird
+  onClose?: () => void;
 }
 
 export function CookieBanner({ 
   className,
-  onAcceptAll,
-  onAcceptNecessary,
-  // Text defaults
-  title = 'Wir verwenden Cookies',
-  description = 'Wir nutzen Cookies auf unserer Website, um die Benutzererfahrung zu verbessern. Einige davon sind essenziell für den Betrieb der Seite, während andere uns helfen zu verstehen, wie die Seite genutzt wird.',
-  acceptAllText = 'Alle akzeptieren',
-  acceptNecessaryText = 'Nur Notwendige',
-  // Layout defaults
   position = 'bottom',
-  maxWidth = '4xl',
+  maxWidth = 'max-w-screen-lg',
   showContainer = true,
-  // Styling defaults
-  backgroundColor = 'white',
-  textColor = 'gray-900',
-  borderColor = 'gray-200',
-  // Button defaults
   buttonSize = 'medium',
   buttonClassName,
   reverseButtonOrder = false,
   buttonsFullWidth = false,
-  // Custom content
-  children
+  onClose,
 }: CookieBannerProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    // Zeige Banner nur, wenn noch keine Cookie-Einstellungen vorhanden sind
+    const consent = cookieService.getStoredConsent();
+    setShow(!consent);
+  }, []);
 
   const handleAcceptAll = () => {
-    setIsVisible(false);
-    onAcceptAll?.();
+    cookieService.acceptAll();
+    setShow(false); // Banner ausblenden nach Akzeptieren
+    onClose?.();
   };
 
   const handleAcceptNecessary = () => {
-    setIsVisible(false);
-    onAcceptNecessary?.();
+    cookieService.acceptNecessary();
+    setShow(false); // Banner ausblenden nach Akzeptieren
+    onClose?.();
   };
 
-  if (!isVisible) return null;
+  if (!show) return null;
+
+  const containerClasses = cn(
+    'fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6',
+    className
+  );
+
+  const contentClasses = cn(
+    'bg-primary-900/95 backdrop-blur-sm border-t border-primary-700/50',
+    showContainer && [
+      'mx-4 my-4 rounded-lg',
+      'bg-primary-800/50',
+      'border border-primary-700/50'
+    ]
+  );
+
+  const maxWidthClasses = maxWidth;
+
+  const buttonSizeClasses = {
+    small: 'px-3 py-1.5 text-sm',
+    medium: 'px-4 py-2',
+    large: 'px-6 py-3 text-lg',
+  }[buttonSize];
 
   const buttons = [
-    <Button 
-      key="necessary"
-      variant="necessary"
-      size={buttonSize}
-      onClick={handleAcceptNecessary}
-      className={cn(
-        buttonsFullWidth && 'w-full',
-        buttonClassName
-      )}
-    >
-      {acceptNecessaryText}
-    </Button>,
-    <Button 
-      key="accept"
-      variant="accept"
-      size={buttonSize}
+    <Button
+      key="accept-all"
       onClick={handleAcceptAll}
       className={cn(
+        buttonSizeClasses,
+        'bg-primary-600 hover:bg-primary-700 text-white',
         buttonsFullWidth && 'w-full',
         buttonClassName
       )}
     >
-      {acceptAllText}
-    </Button>
+      Alle akzeptieren
+    </Button>,
+    <Button
+      key="accept-necessary"
+      onClick={handleAcceptNecessary}
+      className={cn(
+        buttonSizeClasses,
+        'bg-primary-800/50 hover:bg-primary-700/50 text-white',
+        buttonsFullWidth && 'w-full',
+        buttonClassName
+      )}
+    >
+      Nur erforderliche
+    </Button>,
   ];
 
   if (reverseButtonOrder) {
@@ -101,55 +107,31 @@ export function CookieBanner({
   }
 
   return (
-    <div className={cn(
-      'fixed left-0 right-0 bg-white shadow-lg',
-      position === 'bottom' ? 'bottom-0' : 'top-0',
-      `bg-${backgroundColor}`,
-      `border-${position === 'bottom' ? 't' : 'b'} border-${borderColor}`,
-      'p-4 md:p-6',
-      'z-50',
-      className
-    )}>
-      {showContainer ? (
-        <div className="container mx-auto">
-          <div className={cn('mx-auto', maxWidth && `max-w-${maxWidth}`)}>
-            {renderContent()}
-          </div>
-        </div>
-      ) : (
-        renderContent()
-      )}
-    </div>
-  );
-
-  function renderContent() {
-    return (
-      <div className="flex flex-col gap-4">
-        {children || (
-          <div className="space-y-2">
-            <h3 className={cn(
-              'text-lg font-semibold',
-              `text-${textColor}`
+    <div className={containerClasses}>
+      <div className={cn('mx-auto', maxWidthClasses)}>
+        <div className={contentClasses}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <h3 className="text-base sm:text-lg font-semibold text-content-primary mb-1 sm:mb-2">
+                Diese Website verwendet Cookies
+              </h3>
+              <p className="text-sm sm:text-base text-content-secondary">
+                Wir nutzen Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten.{' '}
+                <Link href="/cookies" className="text-content-primary hover:text-content-secondary underline">
+                  Mehr erfahren
+                </Link>
+              </p>
+            </div>
+            <div className={cn(
+              'flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto',
+              buttonsFullWidth && 'w-full flex-col',
+              !buttonsFullWidth && 'flex-row'
             )}>
-              {title}
-            </h3>
-            <p className={cn(
-              'text-gray-600',
-              `text-${textColor}/80`
-            )}>
-              {description}
-            </p>
+              {buttons}
+            </div>
           </div>
-        )}
-        
-        <div className={cn(
-          'flex gap-3',
-          buttonsFullWidth ? 'flex-col' : 'flex-col sm:flex-row',
-          'justify-end'
-        )}>
-          {buttons}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
