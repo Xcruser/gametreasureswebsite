@@ -1,18 +1,21 @@
-import type { Metadata } from 'next';
+import './globals.css';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
-import { Header } from '@/components/Header/Header';
-import { headerConfig } from '@/config/components';
 import { Providers } from './providers';
-import { CartProvider } from '@/lib/CartContext';
-import './globals.css';
+import { CartProvider } from '@/contexts/CartContext';
+import { Header } from '@/components/layout/Header/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Game Treasures',
-  description: 'Entdecke und kaufe In-Game Items für deine Lieblingsspiele',
-  keywords: ['Game', 'Items', 'Shop', 'Gaming', 'In-Game', 'Monopoly Go'],
+const navigationItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Shop', href: '/shop' },
+  { label: 'Kontakt', href: '/contact' },
+];
+
+export const metadata = {
+  title: 'GameTreasures - Monopoly GO Items',
+  description: 'Entdecken Sie exklusive Monopoly GO Items - sicher und diskret.',
 };
 
 export default function RootLayout({
@@ -20,19 +23,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Konvertiere die readonly Props in mutable Props
-  const headerProps = {
-    ...headerConfig,
-    navigationItems: [...headerConfig.navigationItems],
-  };
-
   return (
     <html lang="de">
       <body className={inter.className}>
         <Providers>
           <CartProvider>
-            <Header {...headerProps} />
-            {children}
+            <div className="flex flex-col min-h-screen">
+              <Header navigationItems={navigationItems} />
+              <main className="flex-grow">{children}</main>
+            </div>
           </CartProvider>
           <Analytics />
         </Providers>

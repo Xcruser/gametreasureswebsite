@@ -1,136 +1,50 @@
 'use client';
 
-import { HiOutlineMail } from 'react-icons/hi';
-import { BsMessenger, BsClock } from 'react-icons/bs';
-import { BiSupport } from 'react-icons/bi';
+import { cn } from '@/utils/cn';
 
-/**
- * Datenstruktur für die Geschäftszeiten
- * @interface BusinessHours
- */
-interface BusinessHours {
-  /** Arbeitstage (z.B. "Montag - Freitag") */
-  days: string;
-  /** Arbeitszeiten (z.B. "9:00 - 17:00 Uhr") */
-  hours: string;
-}
-
-/**
- * Props für die ContactInfo-Komponente
- * @interface ContactInfoProps
- */
 interface ContactInfoProps {
-  /** E-Mail-Adresse für den Support-Kontakt */
-  email?: string;
-  /** URL zum Facebook Messenger */
-  messengerUrl?: string;
-  /** Informationstext über die Support-Antwortzeit */
-  supportText?: string;
-  /** Geschäftszeiten-Konfiguration */
-  businessHours?: BusinessHours;
-  /** Zusätzliche CSS-Klassen */
   className?: string;
 }
 
-/**
- * ContactInfo Komponente
- * 
- * Zeigt Kontaktinformationen und Geschäftszeiten an. Enthält Buttons für E-Mail
- * und Messenger-Kontakt sowie Informationen über Support-Zeiten.
- * 
- * @component
- * @example
- * ```tsx
- * <ContactInfo
- *   email="support@example.com"
- *   messengerUrl="https://m.me/example"
- * />
- * ```
- */
-export function ContactInfo({
-  email = 'support@game-treasures.com',
-  messengerUrl = 'https://m.me/gametreasures',
-  supportText = 'Wir antworten in der Regel innerhalb von 24 Stunden',
-  businessHours = {
-    days: 'Montag - Freitag',
-    hours: '9:00 - 17:00 Uhr',
-  },
-  className = '',
-}: ContactInfoProps) {
-  const handleEmailClick = () => {
-    window.location.href = `mailto:${email}`;
-  };
-
-  const handleMessengerClick = () => {
-    window.open(messengerUrl, '_blank');
-  };
-
+export function ContactInfo({ className }: ContactInfoProps) {
   return (
-    <div className={`space-y-6 ${className}`}>
-      {/* E-Mail */}
-      <div className="bg-primary-800/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:bg-primary-800/40 transition-colors">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-accent-blue/10 rounded-lg">
-            <HiOutlineMail className="w-6 h-6 text-accent-blue" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">E-Mail</h3>
-            <button
-              onClick={handleEmailClick}
-              className="text-accent-blue hover:text-accent-blue/80 transition-colors bg-accent-blue/10 px-4 py-2 rounded-lg"
-            >
-              Per E-Mail kontaktieren
-            </button>
-          </div>
-        </div>
+    <div className={cn('space-y-8', className)}>
+      <div>
+        <h3 className="text-xl font-semibold text-white mb-2">Kontaktinformationen</h3>
+        <p className="text-gray-300">
+          Haben Sie Fragen? Wir sind hier, um Ihnen zu helfen.
+        </p>
       </div>
 
-      {/* Facebook Messenger */}
-      <div className="bg-primary-800/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:bg-primary-800/40 transition-colors">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-accent-blue/10 rounded-lg">
-            <BsMessenger className="w-6 h-6 text-accent-blue" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Facebook Messenger</h3>
-            <button
-              onClick={handleMessengerClick}
-              className="text-accent-blue hover:text-accent-blue/80 transition-colors bg-accent-blue/10 px-4 py-2 rounded-lg"
-            >
-              Per Messenger kontaktieren
-            </button>
-          </div>
-        </div>
+      <div>
+        <h4 className="text-lg font-medium text-white mb-2">E-Mail</h4>
+        <a
+          href="mailto:support@gametreasures.de"
+          className="text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          support@gametreasures.de
+        </a>
       </div>
 
-      {/* Support */}
-      <div className="bg-primary-800/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:bg-primary-800/40 transition-colors">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-accent-blue/10 rounded-lg">
-            <BiSupport className="w-6 h-6 text-accent-blue" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Support</h3>
-            <p className="text-gray-300">{supportText}</p>
-          </div>
-        </div>
+      <div>
+        <h4 className="text-lg font-medium text-white mb-2">Discord</h4>
+        <a
+          href="https://discord.gg/gametreasures"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 transition-colors"
+        >
+          Unserem Discord Server beitreten
+        </a>
       </div>
 
-      {/* Geschäftszeiten */}
-      <div className="bg-primary-800/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:bg-primary-800/40 transition-colors">
-        <div className="flex items-start gap-4">
-          <div className="p-3 bg-accent-blue/10 rounded-lg">
-            <BsClock className="w-6 h-6 text-accent-blue" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Geschäftszeiten</h3>
-            <p className="text-gray-300">
-              {businessHours.days}
-              <br />
-              {businessHours.hours}
-            </p>
-          </div>
-        </div>
+      <div>
+        <h4 className="text-lg font-medium text-white mb-2">Geschäftszeiten</h4>
+        <p className="text-gray-300">
+          Montag - Freitag: 9:00 - 18:00 Uhr
+          <br />
+          Samstag & Sonntag: 10:00 - 16:00 Uhr
+        </p>
       </div>
     </div>
   );
