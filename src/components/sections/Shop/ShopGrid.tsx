@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button/Button';
 import { useCart } from '@/lib/CartContext';
 import { getItemImage } from '@/lib/constants';
 import { cn } from '@/utils/cn';
+import Image from 'next/image';
 
 interface ShopItem {
   id: string;
@@ -30,9 +31,11 @@ export function ShopGrid({ items, className }: ShopGridProps) {
       {items.map((item) => (
         <Card key={item.id} className="flex flex-col">
           <Card.Header>
-            <img 
+            <Image 
               src={getItemImage(item.imageUrl)} 
               alt={item.name}
+              width={500}
+              height={500}
               className="w-full h-48 object-cover"
             />
           </Card.Header>

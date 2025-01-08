@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { NavigationItem } from './components/NavigationItem';
-import { Logo } from './components/Logo';
 import { CartButton } from './components/CartButton';
 import { cn } from '@/utils/cn';
 import { usePathname } from 'next/navigation';

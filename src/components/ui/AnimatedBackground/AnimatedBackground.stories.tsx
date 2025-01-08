@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AnimatedBackground, GAMING_ICONS } from './AnimatedBackground';
+import { AnimatedBackground } from './AnimatedBackground';
 import { FaReact, FaHeart, FaStar, FaCode } from 'react-icons/fa';
 
 const meta: Meta<typeof AnimatedBackground> = {

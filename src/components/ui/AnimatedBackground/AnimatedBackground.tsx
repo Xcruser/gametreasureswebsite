@@ -36,10 +36,8 @@ interface AnimatedBackgroundProps {
   // Icon Optionen
   icons?: React.ReactNode[];
   iconCount?: number;
-  iconSize?: 'sm' | 'md' | 'lg';
   iconOpacity?: number;
   // Animation Optionen
-  animationSpeed?: 'slow' | 'medium' | 'fast';
   animationType?: 'float' | 'spin' | 'bounce' | 'gaming';
 }
 
@@ -50,9 +48,7 @@ export function AnimatedBackground({
   gradientDirection = 'to-br',
   icons = [],
   iconCount = 10,
-  iconSize = 'md',
-  iconOpacity = 0.2,
-  animationSpeed = 'medium',
+  iconOpacity = 0.1,
   animationType = 'float',
 }: AnimatedBackgroundProps) {
   const [iconPositions, setIconPositions] = useState<IconPosition[]>([]);

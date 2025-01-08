@@ -1,4 +1,4 @@
-import { ProductCard } from '@/components/ui/ProductCard/ProductCard';
+import { ShopGrid } from '@/components/sections/Shop/ShopGrid';
 import { Product } from '@/types/product';
 import { ClientShop } from './components/ClientShop';
 import { AnimatedBackground } from '@/components/ui/AnimatedBackground/AnimatedBackground';

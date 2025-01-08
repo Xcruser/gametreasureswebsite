@@ -1,4 +1,3 @@
-import { ContactForm } from '@/components/Contact/ContactForm/ContactForm';
 import { AnimatedBackground } from '@/components/ui/AnimatedBackground/AnimatedBackground';
 
 /**

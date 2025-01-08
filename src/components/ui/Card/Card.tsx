@@ -2,6 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { FaShoppingCart } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface CardProps {
   className?: string;
@@ -114,10 +115,12 @@ export function Card({
     >
       {/* Image */}
       <div className={cn('relative overflow-hidden', imageHeightMap[imageHeight])}>
-        <img
+        <Image
           src={image}
-          alt={title}
-          className="w-full h-full object-cover"
+          alt={title || 'Card image'}
+          width={500}
+          height={300}
+          className="w-full h-full object-cover rounded-t-lg"
         />
       </div>
 
