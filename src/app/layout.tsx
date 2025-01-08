@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Providers } from './providers';
 import { CartProvider } from '@/contexts/CartContext';
 import { Header } from '@/components/layout/Header/Header';
+import { Footer } from '@/components/layout/Footer/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               <Header navigationItems={navigationItems} />
               <main className="flex-grow">{children}</main>
+              <Footer />
             </div>
           </CartProvider>
           <Analytics />

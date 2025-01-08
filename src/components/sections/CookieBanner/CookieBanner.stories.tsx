@@ -1,30 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CookieBanner } from './CookieBanner';
 
-const meta: Meta<typeof CookieBanner> = {
+const meta = {
   title: 'Sections/CookieBanner',
   component: CookieBanner,
-  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
     backgrounds: {
       default: 'light',
-    },
-  },
-  argTypes: {
-    onAcceptAll: { action: 'acceptAll' },
-    onAcceptNecessary: { action: 'acceptNecessary' },
-    position: {
-      control: 'select',
-      options: ['top', 'bottom'],
-    },
-    buttonSize: {
-      control: 'select',
-      options: ['small', 'medium', 'large'],
-    },
-    maxWidth: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'none'],
     },
   },
   decorators: [
@@ -38,86 +21,27 @@ const meta: Meta<typeof CookieBanner> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof CookieBanner>;
 
 export default meta;
-type Story = StoryObj<typeof CookieBanner>;
+type Story = StoryObj<typeof meta>;
 
-// Standard-Version
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    position: 'bottom',
+    maxWidth: 'max-w-screen-lg',
+    buttonSize: 'medium',
+  },
+};
 
-// Mobile Version
 export const Mobile: Story = {
+  args: {
+    ...Default.args,
+    buttonsFullWidth: true,
+  },
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
     },
-  },
-};
-
-// Am oberen Rand
-export const TopPosition: Story = {
-  args: {
-    position: 'top',
-  },
-};
-
-// Volle Breite ohne Container
-export const FullWidth: Story = {
-  args: {
-    showContainer: false,
-    maxWidth: 'none',
-  },
-};
-
-// Große Buttons
-export const LargeButtons: Story = {
-  args: {
-    buttonSize: 'large',
-    buttonsFullWidth: true,
-  },
-};
-
-// Angepasste Farben
-export const CustomColors: Story = {
-  args: {
-    backgroundColor: 'blue-900',
-    textColor: 'white',
-    borderColor: 'blue-700',
-  },
-};
-
-// Angepasste Texte
-export const CustomText: Story = {
-  args: {
-    title: 'Datenschutzeinstellungen',
-    description: 'Wir legen Wert auf Ihre Privatsphäre. Wählen Sie aus, welche Cookies Sie zulassen möchten.',
-    acceptAllText: 'Alles erlauben',
-    acceptNecessaryText: 'Minimal',
-  },
-};
-
-// Umgekehrte Button-Reihenfolge
-export const ReversedButtons: Story = {
-  args: {
-    reverseButtonOrder: true,
-  },
-};
-
-// Vollständig angepasst
-export const FullyCustomized: Story = {
-  args: {
-    position: 'top',
-    backgroundColor: 'slate-900',
-    textColor: 'white',
-    borderColor: 'slate-700',
-    buttonSize: 'large',
-    maxWidth: '2xl',
-    title: 'Cookie-Einstellungen',
-    description: 'Helfen Sie uns, Ihre Erfahrung zu verbessern.',
-    acceptAllText: 'Alle Cookies akzeptieren',
-    acceptNecessaryText: 'Basis-Einstellungen',
-    reverseButtonOrder: true,
-    buttonClassName: 'font-bold',
   },
 };
