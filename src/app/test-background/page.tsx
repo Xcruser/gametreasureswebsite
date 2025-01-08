@@ -13,10 +13,8 @@ export default function TestPage() {
           <FaHeart key="heart" className="text-pink-200" />
         ]}
         iconCount={15}
-        iconSize="lg"
         iconOpacity={0.2}
         animationType="float"
-        animationSpeed="medium"
       >
         <div className="h-full flex items-center justify-center">
           <div className="text-center text-white">

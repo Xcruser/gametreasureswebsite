@@ -37,10 +37,8 @@ export const GamingTheme: Story = {
   args: {
     gradientColors: ['#0f172a', '#1e293b'],
     iconCount: 15,
-    iconSize: 'lg',
     iconOpacity: 0.15,
     animationType: 'gaming',
-    animationSpeed: 'medium',
     children: (
       <div className="h-full flex items-center justify-center">
         <div className="text-center text-white">
@@ -58,10 +56,8 @@ export const FloatingReactIcons: Story = {
     gradientColors: ['#0f172a', '#1e293b'],
     icons: [<FaReact key="react" className="text-cyan-500" />],
     iconCount: 15,
-    iconSize: 'md',
     iconOpacity: 0.2,
     animationType: 'float',
-    animationSpeed: 'medium',
   },
 };
 
@@ -71,10 +67,8 @@ export const SpinningHearts: Story = {
     gradientColors: ['#be185d', '#ec4899'],
     icons: [<FaHeart key="heart" className="text-pink-200" />],
     iconCount: 20,
-    iconSize: 'sm',
     iconOpacity: 0.15,
     animationType: 'spin',
-    animationSpeed: 'slow',
   },
 };
 
@@ -84,10 +78,8 @@ export const BouncingStars: Story = {
     gradientColors: ['#1e40af', '#3b82f6'],
     icons: [<FaStar key="star" className="text-yellow-300" />],
     iconCount: 12,
-    iconSize: 'lg',
     iconOpacity: 0.2,
     animationType: 'bounce',
-    animationSpeed: 'medium',
   },
 };
 
@@ -101,10 +93,8 @@ export const MultipleIcons: Story = {
       <FaStar key="star" className="text-yellow-500" />,
     ],
     iconCount: 15,
-    iconSize: 'md',
     iconOpacity: 0.15,
     animationType: 'float',
-    animationSpeed: 'medium',
   },
 };
 
@@ -114,7 +104,6 @@ export const WithContent: Story = {
     gradientColors: ['#1e40af', '#3b82f6'],
     icons: [<FaReact key="react" className="text-cyan-200" />],
     iconCount: 10,
-    iconSize: 'lg',
     iconOpacity: 0.1,
     children: (
       <div className="h-full flex items-center justify-center">

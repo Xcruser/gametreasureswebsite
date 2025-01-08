@@ -3,6 +3,7 @@
 import { cn } from '@/utils/cn';
 import { FaShoppingCart, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface CartItem {
   id: string;
@@ -70,10 +71,12 @@ export function ShoppingCart({
                   <div key={item.id} className="flex items-center gap-4">
                     {/* Item Image */}
                     {item.image && (
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="w-12 h-12 rounded object-cover"
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-cover rounded"
                       />
                     )}
                     

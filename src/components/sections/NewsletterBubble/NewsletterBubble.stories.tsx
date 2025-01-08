@@ -19,7 +19,7 @@ const meta: Meta<typeof NewsletterBubble> = {
     onSubscribe: { action: 'subscribed' },
   },
   decorators: [
-    (Story) => (
+    (Story: React.ComponentType) => (
       <div className="h-[400px] w-full relative bg-gray-100">
         <Story />
       </div>
@@ -40,7 +40,7 @@ export const OpenForm: Story = {
   },
   parameters: {
     decorators: [
-      (Story) => (
+      (Story: React.ComponentType) => (
         <div className="h-[500px] w-full relative bg-gray-100">
           <Story />
         </div>
@@ -81,7 +81,7 @@ export const Mobile: Story = {
       defaultViewport: 'mobile1',
     },
     decorators: [
-      (Story) => (
+      (Story: React.ComponentType) => (
         <div className="h-[300px] w-full relative bg-gray-100">
           <Story />
         </div>
