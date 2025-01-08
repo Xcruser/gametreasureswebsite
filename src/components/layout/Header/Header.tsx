@@ -10,17 +10,11 @@ import { usePathname } from 'next/navigation';
 
 interface HeaderProps {
   navigationItems: Array<{
-    label: string;
     href: string;
+    label: string;
   }>;
   className?: string;
 }
-
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Shop', href: '/shop' },
-  { name: 'Kontakt', href: '/contact' },
-];
 
 export function Header({ navigationItems, className }: HeaderProps) {
   const pathname = usePathname();

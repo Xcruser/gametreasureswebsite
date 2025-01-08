@@ -1,28 +1,41 @@
 'use client';
 
 import Link from 'next/link';
-import { CookieBanner } from '@/components/sections/CookieBanner/CookieBanner';
 import { useState } from 'react';
+import { CookieBanner } from '@/components/sections/CookieBanner/CookieBanner';
 
 export function Footer() {
   const [showCookieSettings, setShowCookieSettings] = useState(false);
 
   return (
-    <footer className="bg-primary-800/50 backdrop-blur-sm border-t border-primary-700/50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-primary-900 text-content-secondary py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Über uns */}
           <div>
             <h3 className="text-lg font-semibold text-content-primary mb-4">Über uns</h3>
-            <ul className="space-y-2">
+            <p className="text-sm">
+              GameTreasures ist dein zuverlässiger Partner für Gaming-Währungen und Booster.
+            </p>
+          </div>
+
+          {/* Links */}
+          <div>
+            <h3 className="text-lg font-semibold text-content-primary mb-4">Links</h3>
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="text-content-secondary hover:text-content-primary transition-colors">
-                  Über GameTreasures
+                <Link href="/about" className="hover:text-content-primary transition-colors">
+                  Über uns
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-content-secondary hover:text-content-primary transition-colors">
+                <Link href="/contact" className="hover:text-content-primary transition-colors">
                   Kontakt
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop" className="hover:text-content-primary transition-colors">
+                  Shop
                 </Link>
               </li>
             </ul>
@@ -31,16 +44,26 @@ export function Footer() {
           {/* Rechtliches */}
           <div>
             <h3 className="text-lg font-semibold text-content-primary mb-4">Rechtliches</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/privacy" className="text-content-secondary hover:text-content-primary transition-colors">
+                <Link href="/imprint" className="hover:text-content-primary transition-colors">
+                  Impressum
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-content-primary transition-colors">
                   Datenschutz
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-content-primary transition-colors">
+                  AGB
                 </Link>
               </li>
               <li>
                 <button
                   onClick={() => setShowCookieSettings(true)}
-                  className="text-content-secondary hover:text-content-primary transition-colors cursor-pointer"
+                  className="hover:text-content-primary transition-colors"
                 >
                   Cookie-Einstellungen
                 </button>
@@ -48,44 +71,25 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Kundenservice */}
+          {/* Zahlungsmethoden */}
           <div>
-            <h3 className="text-lg font-semibold text-content-primary mb-4">Kundenservice</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/faq" className="text-content-secondary hover:text-content-primary transition-colors">
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Social Media & Kontakt */}
-          <div>
-            <h3 className="text-lg font-semibold text-content-primary mb-4">Kontakt</h3>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="mailto:support@gametreasures.de"
-                  className="text-content-secondary hover:text-content-primary transition-colors"
-                >
-                  support@gametreasures.de
-                </a>
-              </li>
+            <h3 className="text-lg font-semibold text-content-primary mb-4">Zahlungsmethoden</h3>
+            <ul className="space-y-2 text-sm">
+              <li>PayPal</li>
+              <li>Kreditkarte</li>
+              <li>Überweisung</li>
             </ul>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="mt-8 pt-8 border-t border-primary-700/50 text-center">
-          <p className="text-content-secondary">
-            {new Date().getFullYear()} GameTreasures. Alle Rechte vorbehalten.
-          </p>
+        <div className="mt-12 pt-8 border-t border-primary-800 text-sm text-center">
+          {new Date().getFullYear()} GameTreasures. Alle Rechte vorbehalten.
         </div>
       </div>
 
       {/* Cookie-Banner wenn Einstellungen geöffnet */}
-      {showCookieSettings && <CookieBanner onClose={() => setShowCookieSettings(false)} />}
+      {showCookieSettings && <CookieBanner />}
     </footer>
   );
 }
