@@ -1,10 +1,6 @@
-import { ProductCard } from '@/components/ui/ProductCard/ProductCard';
 import { Product } from '@/types/product';
-import { ClientShop } from './components/ClientShop';
-import { AnimatedBackground } from '@/components/ui/AnimatedBackground/AnimatedBackground';
 
-// Produktdaten
-const products: Product[] = [
+export const products: Product[] = [
   // Spezial Produkte
   {
     id: 'top-bar',
@@ -97,22 +93,3 @@ const products: Product[] = [
     gameType: 'Monopoly GO',
   },
 ];
-
-export default function ShopPage() {
-  return (
-    <div className="min-h-screen relative">
-      <AnimatedBackground
-        animationType="gaming"
-        gradientColors={['#0f172a', '#1e293b']}
-        iconCount={15}
-        iconOpacity={0.15}
-      >
-        <div className="pt-24">
-          <div className="container mx-auto px-4">
-            <ClientShop products={products} />
-          </div>
-        </div>
-      </AnimatedBackground>
-    </div>
-  );
-}

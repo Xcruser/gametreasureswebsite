@@ -1,66 +1,59 @@
-'use client';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/Button/Button';
-import { buttonConfig } from '@/config/components';
-import { FeatureList } from '@/components/FeatureList/FeatureList';
-import { featureListConfig } from '@/config/components';
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3,
-    }
-  }
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 }
-};
+import { AnimatedBackground } from '../components/ui/AnimatedBackground/AnimatedBackground';
+import { Button } from '../components/ui/Button/Button';
+import { FeatureList } from '../components/ui/FeatureList/FeatureList';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-8 px-4">
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="w-full max-w-4xl mx-auto"
+    <main className="min-h-screen relative">
+      {/* Animierter Hintergrund */}
+      <AnimatedBackground
+        animationType="gaming"
+        gradientColors={['#0f172a', '#1e293b']}
+        iconCount={15}
+        iconOpacity={0.15}
       >
-        <motion.h1
-          animate={{
-            scale: [1, 1.02, 1],
-            transition: {
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }
-          }}
-          className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-accent-blue-light via-accent-green-light to-accent-purple-light text-transparent bg-clip-text text-center"
-        >
-          Willkommen bei Game Treasures
-        </motion.h1>
-
-        <motion.p variants={item} className="text-base md:text-lg lg:text-xl mb-6 md:mb-8 text-content-secondary text-center max-w-2xl mx-auto">
-          Hier finden Sie Ingame items für Monopoly Go.
-        </motion.p>
-
-        <div className="space-y-8">
-          <FeatureList {...featureListConfig} />
-
-          <motion.div variants={container} className="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4">
-            <Button {...buttonConfig}>
-              Zum Shop
-            </Button>
-            <Button {...buttonConfig} variant="secondary">
-              Mehr erfahren
-            </Button>
-          </motion.div>
+        {/* Hero Content */}
+        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-4">
+          <h1 className="text-6xl font-bold text-white mb-6">
+            GameTreasures
+          </h1>
+          <FeatureList
+            title="Einkaufen leicht gemacht"
+            features={[
+              { text: "Keine Registrierung erforderlich" },
+              { text: "Kein Account notwendig" },
+              { text: "Einfach und sicher einkaufen" },
+              { text: "Diskrete Abwicklung" },
+              { text: "Keine Spieldaten erforderlich" },
+              { text: "Schnelle Lieferung" }
+            ]}
+          />
+          <Button variant="primary">
+            Produkte entdecken
+          </Button>
         </div>
-      </motion.div>
+
+        {/* Cookie Banner */}
+        <div className="fixed bottom-0 left-0 right-0 bg-slate-800/95 p-4 z-50">
+          <div className="container mx-auto flex items-center justify-between">
+            <p className="text-white">
+              Diese Website verwendet Cookies, um Ihre Erfahrung zu verbessern.{' '}
+              <Link href="/cookies" className="text-blue-400 hover:underline">
+                Mehr erfahren
+              </Link>
+            </p>
+            <div className="flex gap-4">
+              <Button variant="secondary">
+                Nur Notwendige
+              </Button>
+              <Button variant="primary">
+                Alle akzeptieren
+              </Button>
+            </div>
+          </div>
+        </div>
+      </AnimatedBackground>
     </main>
   );
 }

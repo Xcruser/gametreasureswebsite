@@ -53,6 +53,15 @@ const config: Config = {
           info: '#2563EB', // Information (Blau)
         }
       },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translate(-50%, -50%) translateY(0)' },
+          '50%': { transform: 'translate(-50%, -50%) translateY(-20px)' },
+        },
+      },
+      animation: {
+        float: 'float 3s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
